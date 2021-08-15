@@ -5,7 +5,7 @@ module.exports = (md, baseUrl) => {
   return (searchQuery, type) => {
     if (type === 'function' && !searchQuery.includes('(')) searchQuery += '('
     if (type === 'event' && !searchQuery.includes('"')) searchQuery = `"${searchQuery}"`
-    const results = headers.filter(o => o.text.includes(searchQuery))
+    const results = headers.filter(o => o.text.toLowerCase().includes(searchQuery.toLowerCase()))
     return results
       .sort((a, b) => similarity(searchQuery, a.text) - similarity(searchQuery, b.text))
       .map((token) => {
