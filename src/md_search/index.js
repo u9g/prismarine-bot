@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const parse = require('./parser')
 const { GH_MD_FILE, RAW_MD_FILE } = require('./links.json')
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed, Permissions } = require('discord.js')
 
 module.exports = async client => {
   const txt = await fetch(RAW_MD_FILE).then(res => res.text())
@@ -18,10 +18,25 @@ module.exports = async client => {
 
     const [,, searchQuery] = msg.content.match(/^!([a-z]) (.+)/)
     const links = search(searchQuery/*, typeMap[type] */)
-    const embed = new MessageEmbed()
-      .setTitle('Search results for: ' + searchQuery)
-      .setDescription(links.map(link => `- [${link.text}](${link.link})`).join('\n'))
-      .setColor('BLURPLE')
-    msg.reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
+    const title = 'Search results for: ' + searchQuery
+    if (msg.channel.permissionsFor(msg.guild.me).has(Permissions.FLAGS.EMBED_LINKS)) {
+      const desc = links.map(link => `- [${link.text}](${link.link})`).join('\n')
+      const txt = title + desc
+      const embed = new MessageEmbed()
+        .setTitle(title)
+        .setDescription(desc)
+        .setColor('BLURPLE')
+      msg.reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
+      if (txt.length > 1000) {
+        return msg.reply({ content: 'Message too long, be more specific', allowedMentions: { repliedUser: false } })
+      }
+    } else {
+      const desc = links.map(link => `- ${link.text} -> ${link.link}`).join('\n')
+      const txt = '__**' + title + '**__' + '\n' + desc
+      msg.reply({ content: txt, allowedMentions: { repliedUser: false } })
+      if (txt.length > 1000) {
+        return msg.reply({ content: 'Message too long, be more specific', allowedMentions: { repliedUser: false } })
+      }
+    }
   })
 }
