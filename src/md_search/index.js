@@ -26,17 +26,17 @@ module.exports = async client => {
         .setTitle(title)
         .setDescription(desc)
         .setColor('BLURPLE')
-      msg.reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
       if (txt.length > 1000) {
         return msg.reply({ content: 'Message too long, be more specific', allowedMentions: { repliedUser: false } })
       }
+      msg.reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
     } else {
       const desc = links.map(link => `- ${link.text} -> ${link.link}`).join('\n')
       const txt = '__**' + title + '**__' + '\n' + desc
-      msg.reply({ content: txt, allowedMentions: { repliedUser: false } })
       if (txt.length > 1000) {
         return msg.reply({ content: 'Message too long, be more specific', allowedMentions: { repliedUser: false } })
       }
+      msg.reply({ content: txt, allowedMentions: { repliedUser: false } })
     }
   })
 }
