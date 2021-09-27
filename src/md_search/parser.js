@@ -10,7 +10,7 @@ module.exports = (md, baseUrl) => {
       .sort((a, b) => similarity(searchQuery, a.text) - similarity(searchQuery, b.text))
       .map((token) => {
         token.link = baseUrl + token.text
-          .replace(/\.|\(|\)|,|\[|\]|=|"/g, '')
+          .replace(/\.|\(|\)|,|\[|\]|=|"|:/g, '')
           .replace(/ /g, '-')
           .toLowerCase()
         return token
