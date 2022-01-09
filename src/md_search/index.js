@@ -12,10 +12,10 @@ module.exports = async client => {
   //   a: 'all'
   // }
   client.on('messageCreate', msg => {
+    if (!msg || !msg.content) return
     if (msg.author.bot || ((!['413438150594265099', '832327016849866792', '738645672085159946'].some(cId => cId === msg.channelId)) && msg.guildId !== '661701980036661308')) return
     // if (!/^![f|e|a|s]/.test(msg.content)) return
     if (!/^!s/.test(msg.content)) return
-
     const [,, searchQuery] = msg.content.match(/^!([a-z]) (.+)/)
     const links = search(searchQuery/*, typeMap[type] */)
     const title = 'Search results for: ' + searchQuery
