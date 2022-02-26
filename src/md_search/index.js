@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 const parse = require('./parser')
 const { GH_MD_FILE, RAW_MD_FILE } = require('./links.json')
 const { MessageEmbed, Permissions } = require('discord.js')
+const config = require('../../config')
 
 module.exports = async client => {
   const txt = await fetch(RAW_MD_FILE).then(res => res.text())
@@ -13,7 +14,7 @@ module.exports = async client => {
   // }
   client.on('messageCreate', msg => {
     if (!msg || !msg.content) return
-    if (msg.author.bot || ((!['413438150594265099', '832327016849866792', '738645672085159946'].some(cId => cId === msg.channelId)) && msg.guildId !== '661701980036661308')) return
+    if (msg.author.bot || !config.ONLY_ALLOW_SEARCH_COMMANDS_IN_THESE_CHANNELS.includes(msg.channelId) || msg.guildId !== config.TESTING_GUILD) return
     // if (!/^![f|e|a|s]/.test(msg.content)) return
     if (!/^!s/.test(msg.content)) return
     const [,, searchQuery] = msg.content.match(/^!([a-z]) (.+)/)
