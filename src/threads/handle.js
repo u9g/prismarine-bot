@@ -1,5 +1,3 @@
-const { Message, ThreadChannel } = require('discord.js')
-
 const titleRegex = /!title (.+)/
 
 /**
@@ -18,8 +16,8 @@ async function createThread (message) {
 
 /**
  *
- * @param {ThreadChannel} thread
- * @param {Message} message
+ * @param {import('discord.js').ThreadChannel} thread
+ * @param {import('discord.js').Message} message
  */
 async function handleThread (thread, message) {
   const sent = await thread.send(`Hello <@${message.author.id}>\n\nThis is your help thread\nYou have 1 minute to change the title with \`!title [a brief description]\`\nYou can close it with \`!close\``)
