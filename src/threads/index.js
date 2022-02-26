@@ -1,12 +1,10 @@
-const { Client } = require('discord.js')
 const { createThread } = require('./handle')
 const config = require('../../config')
 
 const channels = ['']
 
 /**
- *
- * @param {Client} client
+ * @param {import('discord.js').Client} client
  */
 module.exports = async client => {
   client.on('messageCreate', async (msg) => {
