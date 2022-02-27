@@ -9,9 +9,9 @@ module.exports = async client => {
   const search = parse(txt, GH_MD_FILE)
   client.on('messageCreate', msg => {
     if (!msg || !msg.content) return
-    if (msg.author.bot || !config.ONLY_ALLOW_SEARCH_COMMANDS_IN_THESE_CHANNELS.includes(msg.channelId) || msg.guildId !== config.TESTING_GUILD) return
+    if (msg.author.bot || (!config.ONLY_ALLOW_SEARCH_COMMANDS_IN_THESE_CHANNELS.includes(msg.channelId) && msg.guildId !== config.TESTING_GUILD)) return
     if (!/^!s .+$/.test(msg.content)) return
-    const [,, searchQuery] = msg.content.match(/^!s (.+)$/)
+    const [, searchQuery] = msg.content.match(/^!s (.+)$/)
     const links = search(searchQuery)
     const title = 'Search results for: ' + searchQuery
     if (msg.channel.permissionsFor(msg.guild.me).has(Permissions.FLAGS.EMBED_LINKS)) {
