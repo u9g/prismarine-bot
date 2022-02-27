@@ -11,7 +11,7 @@
   "author": "u9g <winworkswow@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^13.0.1",
+    "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "marked": "^2.1.3",
     "mocha": "^9.0.3",
