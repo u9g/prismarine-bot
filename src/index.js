@@ -4,8 +4,8 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 
 const plugins = [
   require('./github_text_embed'),
-  require('./md_search')
-  // require('./threads')
+  require('./md_search'),
+  require('./threads')
 ]
 
 client.on('ready', () => {
