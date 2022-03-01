@@ -1,24 +1,18 @@
 const { createThread } = require('./handle')
+const { getFirstMessage } = require('./util')
 const config = require('../../config')
 
 /** @param {import('discord.js').Client} client */
 module.exports = async client => {
   /** @returns {Boolean} */
-  async function userAlreadyHasOpenThread (user) {
-    return false // will be restored once discord stops throwing errors for correct code...
-    /*
-    const channel = await client.channels.fetch(config.THREAD_HELP_CHANNEL, { cache: false, force: true })
-    if (channel === null) return true
-    if (channel.isText()) {
-      const { threads } = await channel.threads.fetchActive()
-      for (const [, thread] of threads) {
-        const msg = await thread.fetchStarterMessage()
-        if (msg.author === user) {
-          return true
-        }
+  async function userAlreadyHasOpenThread (ogMsg) {
+    for (const thread of ogMsg.channel.threads.cache.toJSON()) {
+      const msg = await getFirstMessage(thread)
+      if (ogMsg.author === msg?.author) {
+        return true
       }
-      return false
-    } */
+    }
+    return false // will be restored once discord stops throwing errors for correct code...
   }
 
   client.on('messageCreate', async (msg) => {
@@ -26,12 +20,12 @@ module.exports = async client => {
     if (msg.channelId === config.THREAD_HELP_CHANNEL && !(await userAlreadyHasOpenThread(msg))) {
       await createThread(msg)
     } else if (msg.channel.isThread()) {
-      const firstMessage = await msg.channel.fetchStarterMessage()
-      if (msg.content.includes('!close') && (firstMessage.author === msg.author || msg.member.roles.cache.toJSON().length > 0)) {
+      const firstMessage = await getFirstMessage(msg.channel) // null | message
+      if (msg.content.includes('!close') && (firstMessage?.author === msg.author || msg.member.roles.cache.toJSON().length > 0)) {
         await msg.react('✅')
         await msg.channel.setLocked(true)
         await msg.channel.setArchived(true)
-        await firstMessage.react('✅')
+        await firstMessage?.react('✅')
       }
     }
   })
