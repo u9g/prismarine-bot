@@ -4,6 +4,7 @@ const config = require('../../config')
 
 /** @param {import('discord.js').Client} client */
 module.exports = async client => {
+  if (config.THREAD_HELP_CHANNEL?.length < 10) return
   /** @returns {Boolean} */
   async function userAlreadyHasOpenThread (ogMsg) {
     for (const thread of ogMsg.channel.threads.cache.toJSON()) {
