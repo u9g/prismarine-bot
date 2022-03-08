@@ -5,10 +5,18 @@ const titleRegex = /!title (.+)/
  * @param {Message} message
  */
 async function createThread (message) {
-  const thread = await message.startThread({
-    name: `${message.author.username} | Help`,
-    autoArchiveDuration: 1440
-  })
+  let thread
+  try {
+    thread = await message.startThread({
+      name: `${message.author.username} | Help`,
+      autoArchiveDuration: 1440
+    })
+  } catch (err) {
+    console.log("MESSAGE: ")
+    console.log(message)
+    console.log('\n\n\n\n\n')
+    console.error(err)
+  }
 
   if (typeof thread === 'undefined') return
   await handleThread(thread, message)
