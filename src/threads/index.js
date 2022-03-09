@@ -22,7 +22,7 @@ module.exports = async client => {
       await createThread(msg)
     } else if (msg.channel.isThread()) {
       const firstMessage = await getFirstMessage(msg.channel) // null | message
-      if (msg.content.includes('!close') && (firstMessage?.author === msg.author || msg.member.roles.cache.toJSON().length > 0)) {
+      if (msg.content === '!close' && (firstMessage?.author === msg.author || msg.member.roles.cache.toJSON().length > 1)) {
         await msg.react('✅')
         await msg.channel.setLocked(true)
         await msg.channel.setArchived(true)
