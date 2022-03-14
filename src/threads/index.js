@@ -18,7 +18,7 @@ module.exports = async client => {
 
   client.on('messageCreate', async (msg) => {
     if (!msg || !msg.content || msg.author.bot) return
-    if (msg.channelId === config.THREAD_HELP_CHANNEL /* && !(await userAlreadyHasOpenThread(msg)) */) {
+    if (msg.channelId === config.THREAD_HELP_CHANNEL && !msg.system /* && !(await userAlreadyHasOpenThread(msg)) */) {
       await createThread(msg)
     } else if (msg.channel.isThread()) {
       const firstMessage = await getFirstMessage(msg.channel) // null | message
