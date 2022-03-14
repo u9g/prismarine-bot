@@ -6,7 +6,7 @@ module.exports = client => {
   client.on('messageCreate', async msg => {
     const words = msg.content.split(' ')
     const link = words.find(word => word.includes('https://github.com'))
-    if (link == null || link.startsWith('<') return
+    if (link == null || link.startsWith('<')) return
     const parsed = await parse(link)
     if (parsed === null || parsed.L1 < 0 || parsed.L1 > parsed.L2 || parsed.L1 - 1 > parsed.text.length || parsed.L2 - 1 > parsed.text.length) return
     let [l1, l2] = [0, 0]
