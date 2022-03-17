@@ -8,8 +8,9 @@ const plugins = [
   require('./active_threads')
 ]
 
+let client
 function startBot () {
-  const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
+  client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
     plugins.forEach(plugin => plugin(client))
@@ -19,5 +20,7 @@ function startBot () {
 
 startBot()
 process.on('uncaughtException', () => {
+  client?.destroy()
+  client = null
   startBot()
 })
