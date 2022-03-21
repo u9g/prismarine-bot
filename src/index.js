@@ -19,7 +19,8 @@ function startBot () {
 }
 
 startBot()
-process.on('uncaughtException', () => {
+process.on('uncaughtException', (err) => {
+  console.log(err)
   client?.destroy()
   client = null
   startBot()
