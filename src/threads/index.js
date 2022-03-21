@@ -1,5 +1,5 @@
 const { createThread } = require('./handle')
-const { getFirstMessage } = require('../util')
+const { getRealThreadOwner, getFirstMessage } = require('../util')
 const config = require('../../config')
 
 /** @param {import('discord.js').Client} client */
@@ -21,12 +21,12 @@ module.exports = async client => {
     if (msg.channelId === config.THREAD_HELP_CHANNEL && !msg.system /* && !(await userAlreadyHasOpenThread(msg)) */) {
       await createThread(msg)
     } else if (msg.channel.isThread()) {
-      const firstMessage = await getFirstMessage(msg.channel) // null | message
-      if (msg.content === '!close' && (firstMessage?.author === msg.author || msg.member.roles.cache.toJSON().length > 1)) {
+      let realAuthor
+      if (msg.content === '!close' && (realAuthor = await getRealThreadOwner(msg.channel) === msg.author || msg.member.roles.cache.toJSON().length > 1)) {
         await msg.react('✅')
         await msg.channel.setLocked(true)
         await msg.channel.setArchived(true)
-        await firstMessage?.react('✅')
+        await getFirstMessage(msg.channel).then(msg => msg?.react('✅'))
       }
     }
   })

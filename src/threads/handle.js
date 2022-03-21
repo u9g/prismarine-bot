@@ -12,7 +12,7 @@ async function createThread (message) {
       autoArchiveDuration: 1440
     })
   } catch (err) {
-    console.log("MESSAGE: ")
+    console.log('MESSAGE: ')
     console.log(message)
     console.log('\n\n\n\n\n')
     console.error(err)

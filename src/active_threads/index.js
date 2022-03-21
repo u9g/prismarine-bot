@@ -1,5 +1,5 @@
 const config = require('../../config')
-const { iterateNonLockedThreads, getFirstMessage } = require('../util')
+const { iterateNonLockedThreads, messageByOldIndex } = require('../util')
 const { MessageEmbed } = require('discord.js')
 
 /** @param {import('discord.js').Client} client */
@@ -11,16 +11,14 @@ module.exports = async client => {
     const activeChannels = []
     const channel = await client.channels.fetch(config.THREAD_HELP_CHANNEL)
     for await (const threadChannel of iterateNonLockedThreads(channel)) {
-      const msgs = await threadChannel.messages.fetch({ limit: 1 })
-      const msg = msgs.at(0)
+      const msg = await threadChannel.messages.fetch({ limit: 1 }).then(_msg => _msg.first())
       if (!msg?.id) continue
-      const firstMessage = await getFirstMessage(threadChannel)
+      const firstMessage = await messageByOldIndex(threadChannel, 2)
       const startedTimeString = firstMessage?.createdAt ? timeDifference(Date.now(), firstMessage.createdAt) : ''
       activeChannels.push({ channelId: threadChannel.id, msgId: msg.id, name: threadChannel.name, startedTimeString })
     }
     const activityChannel = await client.channels.fetch(config.THREAD_ACTIVITY_CHANNEL)
-    const msgsInActivityChannel = await activityChannel.messages.fetch({ limit: 1 })
-    const msg = msgsInActivityChannel.at(0)
+    const msg = await activityChannel.messages.fetch({ limit: 1 }).then(_msg => _msg.first())
     const embed = new MessageEmbed()
       .setTitle('Threads that need help:')
       .setFooter({ text: 'Last updated: ' })
@@ -39,7 +37,7 @@ module.exports = async client => {
     } else {
       msg.edit(msgContents)
     }
-  }, 60 * 1000) // once a minute
+  }, 10 * 1000) // once a minute
 }
 
 function timeDifference (current, previous) {
