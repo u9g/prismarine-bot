@@ -1,5 +1,5 @@
 const config = require('../../config')
-const { iterateNonArchivedThreads, getFirstMessage } = require('../util')
+const { iterateNonLockedThreads, getFirstMessage } = require('../util')
 const { MessageEmbed } = require('discord.js')
 
 /** @param {import('discord.js').Client} client */
@@ -10,7 +10,7 @@ module.exports = async client => {
   setInterval(async () => {
     const activeChannels = []
     const channel = await client.channels.fetch(config.THREAD_HELP_CHANNEL)
-    for await (const threadChannel of iterateNonArchivedThreads(channel)) {
+    for await (const threadChannel of iterateNonLockedThreads(channel)) {
       const msgs = await threadChannel.messages.fetch({ limit: 1 })
       const msg = msgs.at(0)
       if (!msg?.id) continue

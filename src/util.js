@@ -6,15 +6,15 @@ async function getFirstMessage (threadChannel) {
   return msg
 }
 
-function iterateNonArchivedThreads (channel) {
+function iterateNonLockedThreads (channel) {
   return {
     async * [Symbol.asyncIterator] () {
       for (const thread of channel.threads.cache.toJSON()) {
-        if (thread.archived) continue
+        if (thread.locked) continue
         yield thread
       }
     }
   }
 }
 
-module.exports = { getFirstMessage, iterateNonArchivedThreads }
+module.exports = { getFirstMessage, iterateNonLockedThreads }

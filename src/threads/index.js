@@ -7,7 +7,7 @@ module.exports = async client => {
   if (config.THREAD_HELP_CHANNEL?.length < 10) return
   /** @returns {Boolean} */
   /* async function userAlreadyHasOpenThread (ogMsg) {
-    for await (const thread of iterateNonArchivedThreads(ogMsg.channel)) {
+    for await (const thread of iterateNonLockedThreads(ogMsg.channel)) {
       const msg = await getFirstMessage(thread)
       if (ogMsg.author === msg?.author) {
         return true
