@@ -21,8 +21,9 @@ module.exports = async client => {
     if (msg.channelId === config.THREAD_HELP_CHANNEL && !msg.system /* && !(await userAlreadyHasOpenThread(msg)) */) {
       await createThread(msg)
     } else if (msg.channel.isThread()) {
-      let realAuthor
-      if (msg.content === '!close' && (realAuthor = await getRealThreadOwner(msg.channel) === msg.author || msg.member.roles.cache.toJSON().length > 1)) {
+      if (msg.content !== '!close' || msg.channel.archived || msg.channel.locked) return
+      const realAuthor = await getRealThreadOwner(msg.channel)
+      if (realAuthor === msg.author || msg.member.roles.cache.toJSON().length > 1) {
         await msg.react('✅')
         await msg.channel.setLocked(true)
         await msg.channel.setArchived(true)
