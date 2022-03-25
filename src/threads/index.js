@@ -23,7 +23,8 @@ module.exports = async client => {
     } else if (msg.channel.isThread()) {
       if (msg.content !== '!close' || msg.channel.archived || msg.channel.locked) return
       const realAuthor = await getRealThreadOwner(msg.channel)
-      if (realAuthor === msg.author || msg.member.roles.cache.toJSON().length > 1) {
+      const getStarterAuthor = await getFirstMessage(msg.channel).then(msg => msg?.author)
+      if (realAuthor === msg.author || getStarterAuthor == msg.author || msg.member.roles.cache.toJSON().length > 1) {
         await msg.react('✅')
         await msg.channel.setLocked(true)
         await msg.channel.setArchived(true)
