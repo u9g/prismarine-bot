@@ -1,4 +1,5 @@
 require('dotenv').config()
+const wait = require('util').promisify(setTimeout)
 const { Client, Intents } = require('discord.js')
 
 const plugins = [
@@ -23,5 +24,6 @@ process.on('uncaughtException', (err) => {
   console.log(err)
   client?.destroy()
   client = null
+  await wait(10_000)
   startBot()
 })
