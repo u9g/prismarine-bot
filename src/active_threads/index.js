@@ -37,7 +37,7 @@ module.exports = async client => {
     } else {
       msg.edit(msgContents)
     }
-  }, 10 * 1000) // once a minute
+  }, 20 * 60 * 1000) // once a minute
 }
 
 function timeDifference (current, previous) {
