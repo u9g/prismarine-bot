@@ -11,6 +11,8 @@
   "author": "u9g <winworkswow@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@sentry/node": "^6.19.2",
+    "@sentry/tracing": "^6.19.2",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "marked": "^2.1.3",
