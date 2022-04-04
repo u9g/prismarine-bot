@@ -27,7 +27,7 @@ module.exports = async client => {
       embed.setDescription('None at the moment. :^)')
     } else {
       const description = activeChannels
-        .map(({ channelId, msgId, name, startedTimeString }) => `- [${name}](https://discord.com/channels/${guildId}/${channelId}/${msgId}) (${startedTimeString})`)
+        .map(({ channelId, msgId, name, startedTimeString }) => `- <#${channelId}> (${startedTimeString})`)
         .join('\n')
       embed.setDescription(description)
     }
