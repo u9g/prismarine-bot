@@ -43,7 +43,7 @@ async function handleThread (thread, message) {
         collected.author !== ogAuthor) return
 
     await thread.edit({
-      name: `${message.author.username} | ${title[1]}`
+      name: `${message.author.username} | ${title[1]}`.substring(0, 100)
     })
   })
 
