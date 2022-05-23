@@ -11,7 +11,7 @@ if (process.env.SENTRY_DSN) {
 
 
 const plugins = [
-  require('./github_text_embed'),
+//   require('./github_text_embed'),
   require('./md_search'),
   require('./threads'),
   require('./active_threads')
