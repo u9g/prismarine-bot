@@ -1,4 +1,5 @@
 const titleRegex = /!title (.+)/
+const codeOfConductChannel = '958989606076948500'
 
 /**
  *
@@ -28,7 +29,7 @@ async function createThread (message) {
  * @param {import('discord.js').Message} message
  */
 async function handleThread (thread, message) {
-  const sent = await thread.send(`Hello <@${message.author.id}>\n\nThis is your help thread\nYou have 1 minute to change the title with \`!title [a brief description]\`\nYou can close the thread with \`!close\``)
+  const sent = await thread.send(`Hello <@${message.author.id}>\n\nThis is your help thread\nPlease read <#${codeOfConductChannel}>\nYou have 1 minute to change the title with \`!title [a brief description]\`\nYou can close the thread with \`!close\``)
   const collector = thread.createMessageCollector({
     filter: message => message.cleanContent.startsWith('!title') && message.cleanContent.length < 100,
     time: 60000,
@@ -60,7 +61,7 @@ async function handleThread (thread, message) {
  * @param {boolean} closed
  */
 async function editMessage (message, original, closed) {
-  await message.edit(`Hello <@${original.author.id}>\n\nThis is your help thread\nYou can no longer change the title${closed ? '' : '\nYou can close it with `!close`'}`).catch(() => {})
+  await message.edit(`Hello <@${original.author.id}>\n\nThis is your help thread\nPlease read <#${codeOfConductChannel}>\nYou can no longer change the title${closed ? '' : '\nYou can close it with `!close`'}`).catch(() => {})
 }
 
 module.exports = {
