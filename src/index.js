@@ -11,14 +11,14 @@ if (process.env.SENTRY_DSN) {
 
 
 const plugins = [
-//   require('./github_text_embed'),
+  //   require('./github_text_embed'),
   require('./md_search'),
   require('./threads'),
   require('./active_threads')
 ]
 
 let client
-function startBot () {
+function startBot() {
   client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)

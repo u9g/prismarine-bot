@@ -5,7 +5,7 @@ const { MessageEmbed, Permissions } = require('discord.js')
 const config = require('../../config')
 
 module.exports = async client => {
-  client.on('messageCreate', msg => {
+  client.on('messageCreate', async msg => {
     if (!msg || !msg.content) return
     if (!/^!s .+$/.test(msg.content)) return
     const notInAllowedChannel = !config.ONLY_ALLOW_SEARCH_COMMANDS_IN_THESE_CHANNELS.includes(msg.channelId)
