@@ -27,8 +27,11 @@ function startBot() {
   client.login(process.env.DISCORD_TOKEN)
 }
 
+let times = 0
+
 startBot()
 process.on('uncaughtException', async (err) => {
+  if (times++ > 10) return
   console.log(err)
   if (process.env.SENTRY_DSN) {
     Sentry.captureException(e);
