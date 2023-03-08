@@ -5,8 +5,6 @@ const { MessageEmbed, Permissions } = require('discord.js')
 const config = require('../../config')
 
 module.exports = async client => {
-  const txt = await fetch(RAW_MD_FILE).then(res => res.text())
-  const search = parse(txt, GH_MD_FILE)
   client.on('messageCreate', msg => {
     if (!msg || !msg.content) return
     if (!/^!s .+$/.test(msg.content)) return
@@ -14,6 +12,8 @@ module.exports = async client => {
     const notInAllowedThread = (msg.channel.isThread() && !config.ONLY_ALLOW_SEARCH_COMMANDS_IN_THREADS_IN_THESE_CHANNELS.includes(msg.channel.parentId))
     if (msg.author.bot || (notInAllowedChannel && notInAllowedThread)) return
     const [, searchQuery] = msg.content.match(/^!s (.+)$/)
+    const txt = await fetch(RAW_MD_FILE).then(res => res.text())
+    const search = parse(txt, GH_MD_FILE)
     const links = search(searchQuery)
     const title = 'Search results for: ' + searchQuery
     if (msg.channel.permissionsFor(msg.guild.me).has(Permissions.FLAGS.EMBED_LINKS)) {
