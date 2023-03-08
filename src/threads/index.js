@@ -29,9 +29,9 @@ module.exports = async client => {
       const getStarterAuthor = await getFirstMessage(msg.channel).then(msg => msg?.author)
       if (realAuthor === msg.author || getStarterAuthor == msg.author || msg.member.roles.cache.toJSON().length > 1) {
         await msg.react('✅')
+        await getFirstMessage(msg.channel).then(msg => msg?.react('✅'))
         await msg.channel.setLocked(true)
         await msg.channel.setArchived(true)
-        await getFirstMessage(msg.channel).then(msg => msg?.react('✅'))
       }
     }
   })
