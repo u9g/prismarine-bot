@@ -3,7 +3,7 @@ async function getFirstMessage (threadChannel) {
   try {
     msg = await threadChannel.fetchStarterMessage()
   } catch (e) {}
-  return msg.first()
+  return msg
 }
 
 async function getRealThreadOwner (threadChannel) {
